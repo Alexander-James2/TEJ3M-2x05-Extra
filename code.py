@@ -1,16 +1,27 @@
-# Created by Alexander James
-# Created on Nov. 2023
+"""CircuitPython Essentials Servo continuous rotation servo example"""
+import time
+import board
+import pwmio
+from adafruit_motor import servo
 
-from time import sleep
-from machine import Pin, PWM
+# create a PWMOut object on Pin A2.
+pwm = pwmio.PWMOut(board.A1, frequency=50)
 
-pwm = PWM(Pin(1))
-pwm.freq(50)
+# Create a servo object, my_servo.
+my_servo = servo.ContinuousServo(pwm)
 
 while True:
-    for position in range(1000,9000,50):
-        pwm.duty_u16(position)
-        sleep(0.01)
-    for position in range(9000,1000,-50):
-        pwm.duty_u16(position)
-        sleep(0.01)
+    print("forward")
+    my_servo.throttle = 1.0
+    time.sleep(2.0)
+    print("stop")
+    my_servo.throttle = 0.0
+    time.sleep(2.0)
+    print("reverse")
+    my_servo.throttle = -1.0
+    time.sleep(2.0)
+    print("stop")
+    my_servo.throttle = 0.0
+    time.sleep(4.0)
+    
+    
